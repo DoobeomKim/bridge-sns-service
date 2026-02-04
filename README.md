@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SNS 자동화 매니저 🚀
 
-## Getting Started
+AI 기반 SNS 콘텐츠 자동 생성 및 관리 서비스
 
-First, run the development server:
+## 📋 프로젝트 개요
+
+- **목표**: 5-10명 베타 고객을 위한 SNS 자동화 MVP
+- **플랫폼**: PWA (Progressive Web App)
+- **핵심 기능**: Instagram + Claude AI + 스케줄러
+
+## 🏗️ 기술 스택
+
+- Next.js 16 (App Router)
+- TypeScript
+- Tailwind CSS 4
+- **Vercel Postgres** (Database)
+- **NextAuth.js v5** (Authentication)
+- Claude API (텍스트 생성)
+- Instagram Graph API
+
+## 🚀 시작하기
+
+### 필수 요구사항
+
+- Node.js 20.9.0 이상
+- npm 10 이상
+- **Vercel 계정** (Postgres 사용)
+- Claude API 키
+- Meta Developer 계정 (Instagram API)
+
+### 설치 및 실행
 
 ```bash
+# 의존성 설치
+npm install
+
+# 환경 변수 설정
+cp .env.local.example .env.local
+# .env.local 파일을 열어서 실제 값으로 수정
+
+# 개발 서버 실행
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+브라우저에서 [http://localhost:3000](http://localhost:3000) 을 열어서 확인
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🗄️ 데이터베이스
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 멀티테넌시 구조
 
-## Learn More
+```
+users (NextAuth.js 사용자)
+├─ profiles (권한 정보)
+│  ├─ role: super_admin (우리)
+│  └─ role: org_admin (고객)
+├─ organizations (고객사)
+├─ instagram_accounts (연동 계정)
+└─ posts (생성된 포스트)
+```
 
-To learn more about Next.js, take a look at the following resources:
+### DB 설정 (Vercel Postgres)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Vercel 프로젝트 생성 및 연결**
+```bash
+# Vercel CLI 설치
+npm i -g vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# 프로젝트 연결
+vercel link
+```
 
-## Deploy on Vercel
+2. **Vercel Postgres 생성**
+   - Vercel Dashboard → Storage → Create Database
+   - Postgres 선택
+   - 자동으로 환경 변수 설정됨
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **마이그레이션 실행**
+```bash
+# Vercel CLI로 SQL 실행
+vercel postgres -- < db/20260204_initial_schema.sql
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# 또는 Vercel Dashboard의 Query Editor에서 직접 실행
+```
+
+## 📊 개발 로드맵
+
+- **Phase 0 (현재)**: 웹 MVP 개발 (4-6개월)
+- **Phase 0.5**: PWA 전환 (2-3주)
+- **Phase 1**: 기능 확장 (3-4개월)
+- **Phase 2**: 정식 출시 (6개월)
+
+자세한 내용은 `docs/sns_service_roadmap.md` 참조
+
+## 📚 문서
+
+- [기술 로드맵](docs/sns_service_roadmap.md)
+- [비즈니스 기획](docs/sns_service_planning.md)
+- [개발 진행 상황](docs/PROGRESS.md)
+
+---
+
+**개발 시작일**: 2026-02-04
+**현재 상태**: Week 1 - 기본 설정 완료 ✅
