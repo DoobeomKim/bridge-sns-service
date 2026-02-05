@@ -1,6 +1,7 @@
 // Dashboard Page
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
+import { LogoutButton } from '@/app/components/logout-button'
 
 export default async function DashboardPage() {
   const session = await auth()
@@ -24,14 +25,7 @@ export default async function DashboardPage() {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600">{session.user.email}</span>
-              <form action="/api/auth/signout" method="POST">
-                <button
-                  type="submit"
-                  className="text-sm text-gray-600 hover:text-gray-900"
-                >
-                  로그아웃
-                </button>
-              </form>
+              <LogoutButton />
             </div>
           </div>
         </div>

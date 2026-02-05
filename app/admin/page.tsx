@@ -2,6 +2,7 @@
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 import { query } from '@/lib/db/client'
+import { LogoutButton } from '@/app/components/logout-button'
 
 export default async function AdminPage() {
   const session = await auth()
@@ -38,14 +39,7 @@ export default async function AdminPage() {
               <span className="text-sm text-gray-600">
                 {session.user.email} (슈퍼 관리자)
               </span>
-              <form action="/api/auth/signout" method="POST">
-                <button
-                  type="submit"
-                  className="text-sm text-gray-600 hover:text-gray-900"
-                >
-                  로그아웃
-                </button>
-              </form>
+              <LogoutButton />
             </div>
           </div>
         </div>
