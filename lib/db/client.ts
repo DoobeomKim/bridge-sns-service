@@ -1,22 +1,18 @@
-// Vercel Postgres Client
-import { createPool } from '@vercel/postgres'
+// Vercel Postgres Client for Direct Connections
+import { createClient } from '@vercel/postgres'
 
-// Create a pool for direct connections
-const pool = createPool({
-  connectionString: process.env.POSTGRES_URL,
-})
-
-// Helper function for querying
+// Helper function for querying with direct connection
 export async function query<T = any>(
   text: string,
   params?: any[]
 ): Promise<T[]> {
-  const client = await pool.connect()
+  const client = createClient()
+  await client.connect()
   try {
     const result = await client.query(text, params)
     return result.rows as T[]
   } finally {
-    client.release()
+    await client.end()
   }
 }
 
