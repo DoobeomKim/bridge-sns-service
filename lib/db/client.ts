@@ -6,7 +6,9 @@ export async function query<T = any>(
   text: string,
   params?: any[]
 ): Promise<T[]> {
-  const client = createClient()
+  const client = createClient({
+    connectionString: process.env.POSTGRES_URL,
+  })
   await client.connect()
   try {
     const result = await client.query(text, params)
