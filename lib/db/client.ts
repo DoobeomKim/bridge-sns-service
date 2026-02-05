@@ -1,7 +1,5 @@
 // Vercel Postgres Client
-import { createPool, sql } from '@vercel/postgres'
-
-export { sql }
+import { createPool } from '@vercel/postgres'
 
 // Create a pool for direct connections
 const pool = createPool({
