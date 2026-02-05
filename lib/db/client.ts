@@ -1,15 +1,25 @@
 // Vercel Postgres Client
-import { sql } from '@vercel/postgres'
+import { createPool, sql } from '@vercel/postgres'
 
 export { sql }
+
+// Create a pool for direct connections
+const pool = createPool({
+  connectionString: process.env.POSTGRES_URL,
+})
 
 // Helper function for querying
 export async function query<T = any>(
   text: string,
   params?: any[]
 ): Promise<T[]> {
-  const result = await sql.query(text, params)
-  return result.rows as T[]
+  const client = await pool.connect()
+  try {
+    const result = await client.query(text, params)
+    return result.rows as T[]
+  } finally {
+    client.release()
+  }
 }
 
 // Helper for single row
