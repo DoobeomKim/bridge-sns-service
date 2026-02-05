@@ -1,21 +1,13 @@
-// Vercel Postgres Client for Direct Connections
-import { createClient } from '@vercel/postgres'
+// Vercel Postgres Client (Neon)
+import { sql } from '@vercel/postgres'
 
-// Helper function for querying with direct connection
+// Helper function for querying with pooled connection
 export async function query<T = any>(
   text: string,
   params?: any[]
 ): Promise<T[]> {
-  const client = createClient({
-    connectionString: process.env.POSTGRES_URL,
-  })
-  await client.connect()
-  try {
-    const result = await client.query(text, params)
-    return result.rows as T[]
-  } finally {
-    await client.end()
-  }
+  const result = await sql.query(text, params)
+  return result.rows as T[]
 }
 
 // Helper for single row
